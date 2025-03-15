@@ -10,10 +10,15 @@ class MyClient(commands.Bot):
         super().__init__(command_prefix="$", intents=discord.Intents.all())
         
     async def setup_hook(self):
-       for filename in os.listdir("./cogs"):
-            if filename.endswith(".py") and not filename.startswith("__"):
-                await self.load_extension(f"cogs.{filename[:-3]}")
-                print(f"Loaded {filename}")
+        for root, _, files in os.walk("./cogs"):
+            for filename in files:
+                if filename.endswith(".py") and not filename.startswith("__"):
+                    # Convert path to a valid module import format
+                    rel_path = os.path.relpath(root, "./cogs").replace(os.sep, ".")
+                    module_name = f"cogs.{rel_path}.{filename[:-3]}" if rel_path != "." else f"cogs.{filename[:-3]}"
+                    
+                    await self.load_extension(module_name)
+                    print(f"Loaded {module_name}")
          
     async def on_ready(self):
         print('Logged on as', self.user)
