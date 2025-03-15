@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands 
 
-class BotAdmin(commands.Cog):
+class Synch(commands.Cog):
     def __init__(self, client):
         self.client = client
         
@@ -15,4 +15,4 @@ class BotAdmin(commands.Cog):
         
 
 async def setup(client: commands.Bot):
-    await client.add_cog(BotAdmin(client))
+    await client.add_cog(Synch(client))
