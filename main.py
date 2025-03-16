@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import os
+from util.json_manager import JSONManager
 
 load_dotenv()
 
@@ -22,9 +23,14 @@ class MyClient(commands.Bot):
                     except Exception as e:
                         print(f"Failed to load module {module_name}")
                         print(f"Had the following error: {e}")
-         
+     
     async def on_ready(self):
+        server_ids = [guild.id for guild in self.guilds]
         print('Logged on as', self.user)
+        print(f"Adding the following server ids: {server_ids}")
+        
+        # load services
+        self.json_manager = JSONManager(server_ids)
 
 
 client = MyClient()
