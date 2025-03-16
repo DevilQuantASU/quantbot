@@ -16,9 +16,12 @@ class MyClient(commands.Bot):
                     # Convert path to a valid module import format
                     rel_path = os.path.relpath(root, "./cogs").replace(os.sep, ".")
                     module_name = f"cogs.{rel_path}.{filename[:-3]}" if rel_path != "." else f"cogs.{filename[:-3]}"
-                    
-                    await self.load_extension(module_name)
-                    print(f"Loaded {module_name}")
+                    try:     
+                        await self.load_extension(module_name)
+                        print(f"Loaded {module_name}")
+                    except Exception as e:
+                        print(f"Failed to load module {module_name}")
+                        print(f"Had the following error: {e}")
          
     async def on_ready(self):
         print('Logged on as', self.user)
